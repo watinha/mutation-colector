@@ -68,10 +68,12 @@ public class App {
         for (int i = 0; i < activators.size(); i++) {
             WebElement activator = activators.get(i);
             List <WebElement> mutations = null;
-            this.mouseMove(activator);
-            mutations = this.getMutations();
-            if (mutations != null && mutations.size() != 0) {
-                this.saveScreenshot(activator, mutations, i);
+            if (activator.getSize().getWidth() < 300 && activator.getSize().getHeight() < 100) {
+                this.mouseMove(activator);
+                mutations = this.getMutations();
+                if (mutations != null && mutations.size() != 0) {
+                    this.saveScreenshot(activator, mutations, i);
+                }
             }
         }
         driver.quit();
