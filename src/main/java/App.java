@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -23,6 +24,8 @@ public class App {
 
     private WebDriver driver;
     private String folder = "data/";
+    private String menuFolder = "data/menus/";
+    private String notMenuFolder = "data/not_menus/";
 
     private String readResource (String resourceFilename) {
         String resource = "", buffer = "";
@@ -59,32 +62,34 @@ public class App {
         return (List <WebElement>) executor.executeScript(js);
     }
 
-    private void init (String url) throws Exception {
+    private void search (String url, String cssSelector) throws Exception {
         this.driver = new ChromeDriver();
         driver.get(url);
         driver.manage().window().maximize();
         this.setMutationObserved();
-        List <WebElement> activators = driver.findElements(By.cssSelector("body *"));
+        List <WebElement> activators = driver.findElements(By.cssSelector(cssSelector));
         for (int i = 0; i < activators.size(); i++) {
             WebElement activator = activators.get(i);
             List <WebElement> mutations = null;
-            if (activator.getSize().getWidth() < 300 && activator.getSize().getHeight() < 100) {
-                this.mouseMove(activator);
-                mutations = this.getMutations();
-                if (mutations != null && mutations.size() != 0) {
-                    this.saveScreenshot(activator, mutations, i);
-                }
+            this.mouseMove(activator);
+            mutations = this.getMutations();
+            if (mutations != null && mutations.size() != 0) {
+                this.saveScreenshot(activator, mutations, i);
             }
         }
         driver.quit();
     }
 
     private void saveScreenshot (WebElement activator, List <WebElement> mutations, int index) throws Exception {
+        List <WebElement> mutationCache = new ArrayList <WebElement> ();
         BufferedImage image = this.takeScreenshot();
         this.save_target_screenshot(image, activator, 0, "widget" + index);
         for (int i = 0; i < mutations.size(); i++) {
             WebElement mutation = mutations.get(i);
-            this.save_target_screenshot(image, mutation, i + 1, "widget" + index);
+            if (!mutationCache.contains(mutation)) {
+                this.save_target_screenshot(image, mutation, i + 1, "widget" + index);
+                mutationCache.add(mutation);
+            }
         }
     }
 
@@ -127,7 +132,7 @@ public class App {
 
 
     private void mouseMove (WebElement target) throws Exception {
-        if (target.isDisplayed()) {
+        if (target.isDisplayed() && target.getSize().getWidth() < 300 && target.getSize().getHeight() < 100) {
             Actions actions = new Actions(this.driver);
             actions.moveToElement(target, 1, 1)
                    .build()
@@ -139,6 +144,6 @@ public class App {
     public static void main (String[] args) throws Exception {
         String url = args[0];
         App app = new App();
-        app.init(url);
+        app.search(url, "body > ul > li");
     }
 }
