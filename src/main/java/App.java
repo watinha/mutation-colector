@@ -74,7 +74,11 @@ public class App {
         driver.get(url);
         driver.manage().window().maximize();
         this.setMutationObserved();
-        List <WebElement> activators = driver.findElements(By.cssSelector(cssSelector));
+        List <WebElement> activators = new ArrayList <WebElement> ();
+        String [] cssSelectors = cssSelector.split(",");
+        for (int j = 0; j < cssSelectors.length; j++) {
+            activators.addAll(driver.findElements(By.cssSelector(cssSelectors[j])));
+        }
         for (i = 0; i < activators.size(); i++) {
             WebElement activator = activators.get(i);
             List <WebElement> mutations = null;
