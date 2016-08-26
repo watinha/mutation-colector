@@ -1,6 +1,7 @@
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,6 +15,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 
 import ru.yandex.qatools.ashot.AShot;
@@ -25,7 +27,7 @@ public class App {
     private WebDriver driver;
     private String folder = "data/";
     private String menuFolder = "data/menus/";
-    private String notMenuFolder = "data/not_menus/";
+    private int websiteIndex = 0;
 
     private String readResource (String resourceFilename) {
         String resource = "", buffer = "";
@@ -63,20 +65,23 @@ public class App {
     }
 
     private void search (String url, String cssSelector) throws Exception {
+        int i;
         this.driver = new ChromeDriver();
+        //this.driver = new FirefoxDriver();
         driver.get(url);
         driver.manage().window().maximize();
         this.setMutationObserved();
         List <WebElement> activators = driver.findElements(By.cssSelector(cssSelector));
-        for (int i = 0; i < activators.size(); i++) {
+        for (i = 0; i < activators.size(); i++) {
             WebElement activator = activators.get(i);
             List <WebElement> mutations = null;
             this.mouseMove(activator);
             mutations = this.getMutations();
             if (mutations != null && mutations.size() != 0) {
-                this.saveScreenshot(activator, mutations, i);
+                this.saveScreenshot(activator, mutations, this.websiteIndex + i);
             }
         }
+        this.websiteIndex += i;
         driver.quit();
     }
 
@@ -142,8 +147,14 @@ public class App {
     }
 
     public static void main (String[] args) throws Exception {
-        String url = args[0];
         App app = new App();
-        app.search(url, "body > ul > li");
+        BufferedReader br = new BufferedReader(new FileReader("url_list.txt"));
+        String line = "";
+        while ((line = br.readLine()) != null) {
+            String url = line.substring(0, line.indexOf(' ')),
+                   cssSelector = line.substring(line.indexOf(' ') + 1);
+            app.search(url, cssSelector);
+        }
+        br.close();
     }
 }
