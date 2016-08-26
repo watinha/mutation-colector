@@ -1,2 +1,2 @@
 file:///home/willian/workspace/widget-generator/widgets_generator/results/menus0-0.html body > ul > li
-file:///home/willian/workspace/widget-generator/widgets_generator/results/menus0-1.html body > ul > li
+file:///home/willian/workspace/widget-generator/widgets_generator/results/tooltip1-1.html body > a

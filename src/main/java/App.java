@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -28,6 +30,7 @@ public class App {
     private String folder = "data/";
     private String menuFolder = "data/menus/";
     private int websiteIndex = 0;
+    private PrintWriter resultsWriter;
 
     private String readResource (String resourceFilename) {
         String resource = "", buffer = "";
@@ -88,15 +91,39 @@ public class App {
     private void saveScreenshot (WebElement activator, List <WebElement> mutations, int index) throws Exception {
         List <WebElement> mutationCache = new ArrayList <WebElement> ();
         BufferedImage image = this.takeScreenshot();
-        this.save_target_screenshot(image, activator, 0, "widget" + index);
+        //this.save_target_screenshot(image, activator, 0, "widget" + index);
         for (int i = 0; i < mutations.size(); i++) {
             WebElement mutation = mutations.get(i);
             if (!mutationCache.contains(mutation)) {
-                this.save_target_screenshot(image, mutation, i + 1, "widget" + index);
-                mutationCache.add(mutation);
+                try {
+                    int displayed = mutation.isDisplayed() ? 1 : 0,
+                        height = mutation.getSize().getHeight(),
+                        width = mutation.getSize().getWidth(),
+                        top = mutation.getLocation().getY(),
+                        left = mutation.getLocation().getX(),
+                        activatorTop = activator.getLocation().getY(),
+                        activatorLeft = activator.getLocation().getX(),
+                        distanceTop = activatorTop - top,
+                        distanceLeft = activatorLeft - left,
+                        numberElements = mutation.findElements(By.cssSelector("*")).size();
+                    this.resultsWriter.println(index + "," + i + "," + displayed + "," + height + "," + width + "," +
+                                               top + "," + left + "," + activatorTop + "," + activatorLeft + "," +
+                                               distanceTop + "," + distanceLeft + "," + numberElements);
+                    this.save_target_screenshot(image, mutation, i, "widget" + index);
+                    mutationCache.add(mutation);
+                } catch (StaleElementReferenceException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
+
+    public App (String resultsFileName) throws Exception {
+        File resultsFile = new File(resultsFileName);
+        this.resultsWriter = new PrintWriter(resultsFile);
+        this.resultsWriter.println("activator-id,mutation-id,displayed,height,width,top,left,activatorTop,activatorLeft,distanceTop,distanceLeft,numberElements");
+    }
+
 
     private BufferedImage takeScreenshot () {
         Screenshot ashot_screenshot = new AShot().shootingStrategy(
@@ -146,8 +173,12 @@ public class App {
         }
     }
 
+    public void close () throws Exception {
+        this.resultsWriter.close();
+    }
+
     public static void main (String[] args) throws Exception {
-        App app = new App();
+        App app = new App("results");
         BufferedReader br = new BufferedReader(new FileReader("url_list.txt"));
         String line = "";
         while ((line = br.readLine()) != null) {
@@ -155,6 +186,7 @@ public class App {
                    cssSelector = line.substring(line.indexOf(' ') + 1);
             app.search(url, cssSelector);
         }
+        app.close();
         br.close();
     }
 }

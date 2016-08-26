@@ -5,7 +5,8 @@ var observer = new MutationObserver(function(mutations) {
         window.mutations_observed.push(target);
         if (mutation.addedNodes) {
             for (var i = 0; i < mutation.addedNodes.length; i++) {
-                window.mutations_observed.push(mutation.addedNodes[i]);
+                if (mutation.addedNodes[i].nodeType === 1)
+                    window.mutations_observed.push(mutation.addedNodes[i]);
             };
         }
 
