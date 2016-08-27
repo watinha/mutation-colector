@@ -170,7 +170,7 @@ public class App {
     private void mouseMove (WebElement target) throws Exception {
         if (target.isDisplayed() && target.getSize().getWidth() < 300 && target.getSize().getHeight() < 100) {
             Actions actions = new Actions(this.driver);
-            actions.moveToElement(target, 1, 1)
+            actions.moveToElement(target)
                    .build()
                    .perform();
             Thread.sleep(500);

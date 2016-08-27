@@ -1,2 +1,18 @@
-file:///home/willian/workspace/widget-generator/widgets_generator/results/menus0-0.html body > ul > li
-file:///home/willian/workspace/widget-generator/widgets_generator/results/tooltip1-1.html body > a
+http://www.amazon.com .nav-logo-tagline.nav-sprite.nav-prime-try,#nav-link-shopall,#nav-flyout-shopAll>div>.nav-item,#nav-link-yourAccount,#nav-link-prime,#nav-link-wishlist
+http://americanas.com.br .menu-top-header>li.tooltip,div.cart-itens>a.ci-itens-link,a.bottom-header>ul>li:first-child,nav>ul>li.mh-list,li.oferta-do-dia,div.slide-pager-prev,div.slide-pager-next
+http://folha.uol.com.br #show-menu,nav>ul>li.ambiente,nav>ul>li.ciencia,nav>ul>li.comida,ul.nav>li
+http://globo.com #home-menu>li.g1,li.g1>div>div>ul.first-column>li.has-link,#home-menu>li
+http://www.itau.com.br ul.contentAll>li
+http://www.msn.com div.mestripe>ul>li,li.mosaic
+http://www.netshoes.com.br .holder-sub-menu-my-account,div.dropdown-navigation,ul.main-navigation>li
+http://www.booking.com/  .user-center-nav>li.user-center-option,#index-nav_id>ul>li
+https://www.bankofamerica.com/ #locatorLink,ul.power-menu-module>li
+http://demos.telerik.com/kendo-ui/tooltip/template #products>li
+http://demos.telerik.com/kendo-ui/menu/images #menu-images>li
+http://demos.telerik.com/kendo-ui/menu/orientation #menu>li
+http://jqueryui.com/resources/demos/tooltip/custom-style.html body>p>a,#age
+http://jqueryui.com/resources/demos/tooltip/custom-content.html div>div>h3>a,div>a>img
+http://jqueryui.com/resources/demos/menu/default.html #ui-id-4,#ui-id-9,#ui-id-10,#ui-id-13
+http://jqueryui.com/resources/demos/menu/icons.html #ui-id-5
+http://dojotoolkit.org/documentation/tutorials/1.10/dialogs_tooltips/demo/tooltip-details.html body>ul>li>a
+http://dojotoolkit.org/documentation/tutorials/1.10/dialogs_tooltips/demo/tooltip-mixed.html button,#nameTip,#londonTip,#recordsTip
