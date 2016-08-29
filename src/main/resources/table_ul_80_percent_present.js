@@ -5,7 +5,7 @@ var target = arguments[0],
 
 if (table) {
     childs = table.querySelectorAll("*").length;
-    childs2 = table.querySelector("a").length;
+    childs2 = table.querySelectorAll("a").length;
     if ((childs2/childs) > 0.8)
         return 1;
     else
@@ -13,7 +13,7 @@ if (table) {
 }
 if (ul) {
     childs = ul.querySelectorAll("*").length;
-    childs2 = ul.querySelector("a").length;
+    childs2 = ul.querySelectorAll("a").length;
     if ((childs2/childs) > 0.8)
         return 1;
     else
