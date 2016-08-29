@@ -116,14 +116,14 @@ public class App {
             this.mouseMove(activator);
             mutations = this.getMutations();
             if (mutations != null && mutations.size() != 0) {
-                this.saveScreenshot(activator, mutations, this.websiteIndex + i);
+                this.saveMutations(activator, mutations, this.websiteIndex + i);
             }
         }
         this.websiteIndex += i;
         driver.quit();
     }
 
-    private void saveScreenshot (WebElement activator, List <WebElement> mutations, int index) throws Exception {
+    private void saveMutations (WebElement activator, List <WebElement> mutations, int index) throws Exception {
         List <WebElement> mutationCache = new ArrayList <WebElement> ();
         BufferedImage image = this.takeScreenshot();
         //this.save_target_screenshot(image, activator, 0, "widget" + index);
