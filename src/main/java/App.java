@@ -67,6 +67,11 @@ public class App {
         return (List <WebElement>) executor.executeScript(js);
     }
 
+    private int getWordsTextNodes (WebElement target) {
+        String js = this.readResource("get_average_words_textnodes.js");
+        return (int) this.executeJavaScript(js, target);
+    }
+
     private int getNumberOfTextNodes (WebElement target) {
         String js = this.readResource("get_number_of_textnodes.js");
         return (int) this.executeJavaScript(js, target);
@@ -141,22 +146,24 @@ public class App {
                         distanceTop = activatorTop - top,
                         distanceLeft = activatorLeft - left,
                         numberElements = mutation.findElements(By.cssSelector("*")).size(),
+                        numberOfWordsTextNodes = this.getWordsTextNodes(mutation),
+                        numberOfTextNodes = this.getNumberOfTextNodes(mutation),
                         tablePresent = mutation.findElements(By.cssSelector("table")).size() > 0 ? 1: 0,
                         listPresent = mutation.findElements(By.cssSelector("ul")).size() > 0 ? 1: 0,
                         inputPresent = mutation.findElements(By.cssSelector("input")).size() > 0 ? 1: 0,
                         widgetNamePresent = this.presenceOfWidgetInClass(mutation),
                         datePresent = this.presenceOfDateInType(mutation),
                         imgPresent = mutation.findElements(By.cssSelector("img")).size() > 0 ? 1: 0,
-                        numberOfTextNodes = this.getNumberOfTextNodes(mutation),
                         links80percent = this.tableUl80Percent(mutation),
                         proportionNumbersTextNodes = this.proportionOfTextNodesNumber(mutation);
                     float proportionNumbers  = (numberOfTextNodes == 0 ? 0 : proportionNumbersTextNodes/numberOfTextNodes);
                     this.resultsWriter.println(index + "," + i + "," + displayed + "," + height + "," + width + "," +
                                                top + "," + left + "," + activatorTop + "," + activatorLeft + "," +
-                                               distanceTop + "," + distanceLeft + "," + numberElements + "," +
+                                               distanceTop + "," + distanceLeft + "," + numberElements + "," + numberOfWordsTextNodes + "," +
+                                               numberOfTextNodes + "," +
                                                tablePresent + "," + listPresent + "," + inputPresent + "," +
                                                widgetNamePresent + "," + datePresent + "," + imgPresent + "," +
-                                               numberOfTextNodes + "," + proportionNumbers + "," + links80percent);
+                                               proportionNumbers + "," + links80percent);
                     this.save_target_screenshot(image, mutation, i, "widget" + index);
                     mutationCache.add(mutation);
                 } catch (StaleElementReferenceException ex) {
@@ -169,8 +176,8 @@ public class App {
     public App (String resultsFileName) throws Exception {
         File resultsFile = new File(resultsFileName);
         this.resultsWriter = new PrintWriter(resultsFile);
-        this.resultsWriter.println("activator-id,mutation-id,displayed,height,width,top,left,activatorTop,activatorLeft,distanceTop,distanceLeft,numberElements," +
-                                   "table,list,input,widgetName,date,img,textNodes,proportionNumbers,links80percent");
+        this.resultsWriter.println("activator-id,mutation-id,displayed,height,width,top,left,activatorTop,activatorLeft,distanceTop,distanceLeft,numberElements,numberWords," +
+                                   "textNodes,table,list,input,widgetName,date,img,proportionNumbers,links80percent");
     }
 
 
