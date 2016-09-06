@@ -1,0 +1,6 @@
+http://www.aliexpress.com/ #nav-global>div.ng-item.ng-help>span.ng-sub-title,#nav-user-account,div.categories-list-box>dl>dt>span>a
+http://www.ebay.com/ div.topnav>table>tbody>tr>td.cat
+https://www.tmall.com/ div.sn-menu>a.menu-hd,div.sn-menu>h3.menu-hd
+http://www.360.com/ #nav>li
+https://world.taobao.com/ #J_SizeNav div.menu-hd>a
+http://www.baidu.com/ #ul>a.pf,#ul>a.bri
