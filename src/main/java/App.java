@@ -67,6 +67,42 @@ public class App {
         return (List <WebElement>) executor.executeScript(js);
     }
 
+    private int getWordsTextNodes (WebElement target) {
+        String js = this.readResource("get_average_words_textnodes.js");
+        return (int) this.executeJavaScript(js, target);
+    }
+
+    private int getNumberOfTextNodes (WebElement target) {
+        String js = this.readResource("get_number_of_textnodes.js");
+        return (int) this.executeJavaScript(js, target);
+    }
+
+    private int presenceOfWidgetInClass (WebElement target) {
+        String js = this.readResource("get_presence_of_widget_in_class.js");
+        return (int) this.executeJavaScript(js, target);
+    }
+
+    private int presenceOfDateInType (WebElement target) {
+        String js = this.readResource("get_presence_of_date_in_type.js");
+        return (int) this.executeJavaScript(js, target);
+    }
+
+    private int tableUl80Percent (WebElement target) {
+        String js = this.readResource("table_ul_80_percent_present.js");
+        return (int) this.executeJavaScript(js, target);
+    }
+
+    private int proportionOfTextNodesNumber (WebElement target) {
+        String js = this.readResource("get_proportion_text_nodes_numbers.js");
+        return (int) this.executeJavaScript(js, target);
+    }
+
+    @SuppressWarnings("unchecked")
+    private int executeJavaScript (String js, WebElement target) {
+        JavascriptExecutor executor = (JavascriptExecutor) this.driver;
+        return ((Long) executor.executeScript(js, target)).intValue();
+    }
+
     private void search (String url, String cssSelector) throws Exception {
         int i;
         this.driver = new ChromeDriver();
@@ -85,14 +121,14 @@ public class App {
             this.mouseMove(activator);
             mutations = this.getMutations();
             if (mutations != null && mutations.size() != 0) {
-                this.saveScreenshot(activator, mutations, this.websiteIndex + i);
+                this.saveMutations(activator, mutations, this.websiteIndex + i);
             }
         }
         this.websiteIndex += i;
         driver.quit();
     }
 
-    private void saveScreenshot (WebElement activator, List <WebElement> mutations, int index) throws Exception {
+    private void saveMutations (WebElement activator, List <WebElement> mutations, int index) throws Exception {
         List <WebElement> mutationCache = new ArrayList <WebElement> ();
         BufferedImage image = this.takeScreenshot();
         //this.save_target_screenshot(image, activator, 0, "widget" + index);
@@ -109,10 +145,25 @@ public class App {
                         activatorLeft = activator.getLocation().getX(),
                         distanceTop = activatorTop - top,
                         distanceLeft = activatorLeft - left,
-                        numberElements = mutation.findElements(By.cssSelector("*")).size();
+                        numberElements = mutation.findElements(By.cssSelector("*")).size(),
+                        numberOfWordsTextNodes = this.getWordsTextNodes(mutation),
+                        numberOfTextNodes = this.getNumberOfTextNodes(mutation),
+                        tablePresent = mutation.findElements(By.cssSelector("table")).size() > 0 ? 1: 0,
+                        listPresent = mutation.findElements(By.cssSelector("ul")).size() > 0 ? 1: 0,
+                        inputPresent = mutation.findElements(By.cssSelector("input")).size() > 0 ? 1: 0,
+                        widgetNamePresent = this.presenceOfWidgetInClass(mutation),
+                        datePresent = this.presenceOfDateInType(mutation),
+                        imgPresent = mutation.findElements(By.cssSelector("img")).size() > 0 ? 1: 0,
+                        links80percent = this.tableUl80Percent(mutation),
+                        proportionNumbersTextNodes = this.proportionOfTextNodesNumber(mutation);
+                    float proportionNumbers  = (numberOfTextNodes == 0 ? 0 : proportionNumbersTextNodes/numberOfTextNodes);
                     this.resultsWriter.println(index + "," + i + "," + displayed + "," + height + "," + width + "," +
                                                top + "," + left + "," + activatorTop + "," + activatorLeft + "," +
-                                               distanceTop + "," + distanceLeft + "," + numberElements);
+                                               distanceTop + "," + distanceLeft + "," + numberElements + "," + numberOfWordsTextNodes + "," +
+                                               numberOfTextNodes + "," +
+                                               tablePresent + "," + listPresent + "," + inputPresent + "," +
+                                               widgetNamePresent + "," + datePresent + "," + imgPresent + "," +
+                                               proportionNumbers + "," + links80percent);
                     this.save_target_screenshot(image, mutation, i, "widget" + index);
                     mutationCache.add(mutation);
                 } catch (StaleElementReferenceException ex) {
@@ -125,13 +176,15 @@ public class App {
     public App (String resultsFileName) throws Exception {
         File resultsFile = new File(resultsFileName);
         this.resultsWriter = new PrintWriter(resultsFile);
-        this.resultsWriter.println("activator-id,mutation-id,displayed,height,width,top,left,activatorTop,activatorLeft,distanceTop,distanceLeft,numberElements");
+        this.resultsWriter.println("activator-id,mutation-id,displayed,height,width,top,left,activatorTop,activatorLeft,distanceTop,distanceLeft,numberElements,numberWords," +
+                                   "textNodes,table,list,input,widgetName,date,img,proportionNumbers,links80percent");
     }
 
 
     private BufferedImage takeScreenshot () {
-        Screenshot ashot_screenshot = new AShot().shootingStrategy(
-                ShootingStrategies.viewportPasting(500)).takeScreenshot(this.driver);
+        Screenshot ashot_screenshot = new AShot()
+            //.shootingStrategy(ShootingStrategies.viewportPasting(500))
+            .takeScreenshot(this.driver);
         return ashot_screenshot.getImage();
     }
 
