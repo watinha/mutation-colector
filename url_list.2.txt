@@ -4,3 +4,10 @@ https://www.tmall.com/ div.sn-menu>a.menu-hd,div.sn-menu>h3.menu-hd
 http://www.360.com/ #nav>li
 https://world.taobao.com/ #J_SizeNav div.menu-hd>a
 http://www.baidu.com/ #ul>a.pf,#ul>a.bri
+http://www.nicovideo.jp/ #siteHeaderRightMenu
+http://xinhuanet.com/ #xhNewspapers,#localChannels,#caseItem>div,#langBody
+https://www.sogou.com/?rfrom=soso #more-product,#settings
+http://www.bilibili.com/ div.z_top_nav>ul>li.b-gc
+http://www.alibaba.com/ h3.menu-button-title,div.category-view>ul>li.menu-tree-trigger
+http://www.naver.com/ #ranklist
+http://www.imdb.com/ #navTitleMenu,#navNameMenu,#navNewsMenu
