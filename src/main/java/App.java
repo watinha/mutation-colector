@@ -157,14 +157,25 @@ public class App {
                         links80percent = this.tableUl80Percent(mutation),
                         proportionNumbersTextNodes = this.proportionOfTextNodesNumber(mutation);
                     float proportionNumbers  = (numberOfTextNodes == 0 ? 0 : proportionNumbersTextNodes/numberOfTextNodes);
-                    this.resultsWriter.println(index + "," + i + "," + displayed + "," + height + "," + width + "," +
-                                               top + "," + left + "," + activatorTop + "," + activatorLeft + "," +
-                                               distanceTop + "," + distanceLeft + "," + numberElements + "," + numberOfWordsTextNodes + "," +
-                                               numberOfTextNodes + "," +
-                                               tablePresent + "," + listPresent + "," + inputPresent + "," +
-                                               widgetNamePresent + "," + datePresent + "," + imgPresent + "," +
-                                               proportionNumbers + "," + links80percent);
-                    this.save_target_screenshot(image, mutation, i, "widget" + index);
+                    if (mutation.getAttribute("role") != null && mutation.getAttribute("role").equals("menu") && mutation.isDisplayed() &&
+                            mutation.getAttribute("aria-expanded") != null && mutation.getAttribute("aria-expanded").equals("true")) {
+                        this.resultsWriter.println(index + "," + i + "," + displayed + "," + height + "," + width + "," +
+                                                   top + "," + left + "," + activatorTop + "," + activatorLeft + "," +
+                                                   distanceTop + "," + distanceLeft + "," + numberElements + "," + numberOfWordsTextNodes + "," +
+                                                   numberOfTextNodes + "," +
+                                                   tablePresent + "," + listPresent + "," + inputPresent + "," +
+                                                   widgetNamePresent + "," + datePresent + "," + imgPresent + "," +
+                                                   proportionNumbers + "," + links80percent + ",1");
+                    } else {
+                        this.resultsWriter.println(index + "," + i + "," + displayed + "," + height + "," + width + "," +
+                                                   top + "," + left + "," + activatorTop + "," + activatorLeft + "," +
+                                                   distanceTop + "," + distanceLeft + "," + numberElements + "," + numberOfWordsTextNodes + "," +
+                                                   numberOfTextNodes + "," +
+                                                   tablePresent + "," + listPresent + "," + inputPresent + "," +
+                                                   widgetNamePresent + "," + datePresent + "," + imgPresent + "," +
+                                                   proportionNumbers + "," + links80percent + ",0");
+                    }
+                    //this.save_target_screenshot(image, mutation, i, "widget" + index);
                     mutationCache.add(mutation);
                 } catch (StaleElementReferenceException ex) {
                     ex.printStackTrace();
@@ -236,7 +247,7 @@ public class App {
 
     public static void main (String[] args) throws Exception {
         App app = new App("results");
-        BufferedReader br = new BufferedReader(new FileReader("url_list.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("url_list-generated.txt"));
         String line = "";
         while ((line = br.readLine()) != null) {
             String url = line.substring(0, line.indexOf(' ')),
