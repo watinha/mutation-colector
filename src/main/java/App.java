@@ -226,7 +226,7 @@ public class App {
             actions.moveToElement(target)
                    .build()
                    .perform();
-            Thread.sleep(500);
+            Thread.sleep(1500);
         }
     }
 
