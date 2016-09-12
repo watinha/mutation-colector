@@ -1,0 +1,13 @@
+http://adf.ly .language_switcher>h5
+https://aws.amazon.com/ #aws-nav-flyout-trigger,.aws-nav-popover-trigger
+https://www.chase.com/# div.header__section--dropdown__title
+http://www.slideshare.net/ a.sub-nav-link.creators-hub
+https://www.so.com/?src=so.com #so_tabs_more
+http://www.jd.com/ #ttbar-mycity,#ttbar-myjd,#ttbar-atte,#ttbar-serv,#ttbar-navs,.dd-inner>.item
+http://english.china.com/ #page-select-language
+https://www.sogou.com/ #more-product,#settings
+https://www.etsy.com/ #catnav-menubar>li
+http://beijing.bitauto.com/ li.bit_link,#city_name_boxhover
+http://store.steampowered.com/ div.supernav_container>a.supernav,div.store_nav>div.flyout_tab
+https://www.wellsfargo.com/ #fatnav>li
+http://extratorrent.cc/ a.menu
