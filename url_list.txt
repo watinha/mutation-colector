@@ -1,7 +1,7 @@
-http://globo.com #home-menu>li.g1,li.g1>div>div>ul.first-column>li.has-link,#home-menu>li
+http://globo.com #home-menu>li.g1,li.g1>div>div>ul.first-column>li.has-children,#home-menu>li.ge,li.ge>div>div>ul.first-column>li.has-children,#home-menu>li.gshow,li.gshow>div>div>ul.first-column>li.has-children,#home-menu>li.videos,li.videos>div>div>ul.first-column>li.has-children,#home-menu>li,ul.barra-itens-servicos>li.hover-button
 http://www.amazon.com .nav-logo-tagline.nav-sprite.nav-prime-try,#nav-link-shopall,#nav-flyout-shopAll>div>.nav-item,#nav-link-yourAccount,#nav-link-prime,#nav-link-wishlist
-http://americanas.com.br .menu-top-header>li.tooltip,div.cart-itens>a.ci-itens-link,a.bottom-header>ul>li:first-child,nav>ul>li.mh-list,li.oferta-do-dia,div.slide-pager-prev,div.slide-pager-next
-http://folha.uol.com.br #show-menu,nav>ul>li.ambiente,nav>ul>li.ciencia,nav>ul>li.comida,nav#main-menu>ul.nav>li
+http://americanas.com.br .menu-top-header>li.tooltip,div.cart-itens>a.ci-itens-link,a.bottom-header>ul>li:first-child,nav>ul>li.mh-list,li.oferta-do-dia,div.slide-pager-prev,div.slide-pager-next,div.a-menu-header,div.a-menu-header>nav>ul>li
+http://folha.uol.com.br #show-menu,nav>ul>li.ambiente,nav>ul>li.ciencia,nav>ul>li.comida,nav>ul>li.cotidiano,nav>ul>li.colunas-e-blogs,nav>ul>li.educacao,nav>ul>li.equilibrio-e-saude,nav>ul>li.especiais,nav>ul>li.esporte,nav>ul>li.folhinha,nav>ul>li.folha-internacional,nav>ul>li.f5,nav>ul>li.ilustrada
 http://www.itau.com.br ul.contentAll>li
 http://www.msn.com div.mestripe>ul>li
 http://www.netshoes.com.br .holder-sub-menu-my-account,div.dropdown-navigation,ul.main-navigation>li
@@ -16,12 +16,12 @@ http://jqueryui.com/resources/demos/menu/default.html #ui-id-4,#ui-id-9,#ui-id-1
 http://jqueryui.com/resources/demos/menu/icons.html #ui-id-5
 http://dojotoolkit.org/documentation/tutorials/1.10/dialogs_tooltips/demo/tooltip-details.html body>ul>li>a
 http://dojotoolkit.org/documentation/tutorials/1.10/dialogs_tooltips/demo/tooltip-mixed.html button,#nameTip,#londonTip,#recordsTip
-http://www.aliexpress.com/ #nav-global>div.ng-item.ng-help>span.ng-sub-title,#nav-user-account,div.categories-list-box>dl>dt>span>a
+http://www.aliexpress.com/ #gh-eb-Geo,#gh-eb-My
 http://www.ebay.com/ div.topnav>table>tbody>tr>td.cat
-https://www.tmall.com/ div.sn-menu>a.menu-hd,div.sn-menu>h3.menu-hd
+https://www.tmall.com/ div.sn-menu>a.menu-hd,div.sn-menu>h3.menu-hd,ul.normal-nav>li.nav-item
 http://www.360.com/ #nav>li
-https://world.taobao.com/ #J_SizeNav div.menu-hd>a
-http://www.baidu.com/ #ul>a.pf,#ul>a.bri
+https://world.taobao.com/ .J_Menu,.J_CatMenu>li
+http://www.baidu.com/ #u1>a.pf,#u1>a.bri
 http://www.nicovideo.jp/ #siteHeaderRightMenu
 http://xinhuanet.com/ #xhNewspapers,#localChannels,#caseItem>div,#langBody
 https://www.sogou.com/?rfrom=soso #more-product,#settings

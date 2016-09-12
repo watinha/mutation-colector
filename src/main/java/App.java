@@ -107,6 +107,7 @@ public class App {
         int i;
         this.driver = new ChromeDriver();
         //this.driver = new FirefoxDriver();
+        this.resultsWriter.println(url);
         driver.get(url);
         driver.manage().window().maximize();
         this.setMutationObserved();
@@ -228,7 +229,7 @@ public class App {
             actions.moveToElement(target)
                    .build()
                    .perform();
-            Thread.sleep(1500);
+            Thread.sleep(3000);
         }
     }
 
