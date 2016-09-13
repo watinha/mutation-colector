@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,16 +14,15 @@ import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
-
-import ru.yandex.qatools.ashot.AShot;
-import ru.yandex.qatools.ashot.Screenshot;
-import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
 public class App {
 
@@ -110,6 +110,7 @@ public class App {
         this.resultsWriter.println(url);
         driver.get(url);
         driver.manage().window().maximize();
+        Thread.sleep(10000);
         this.setMutationObserved();
         List <WebElement> activators = new ArrayList <WebElement> ();
         String [] cssSelectors = cssSelector.split(",");
@@ -119,10 +120,14 @@ public class App {
         for (i = 0; i < activators.size(); i++) {
             WebElement activator = activators.get(i);
             List <WebElement> mutations = null;
-            this.mouseMove(activator);
-            mutations = this.getMutations();
-            if (mutations != null && mutations.size() != 0) {
-                this.saveMutations(activator, mutations, this.websiteIndex + i);
+            try {
+                this.mouseMove(activator);
+                mutations = this.getMutations();
+                if (mutations != null && mutations.size() != 0) {
+                    this.saveMutations(activator, mutations, this.websiteIndex + i);
+                }
+            } catch (StaleElementReferenceException ex) {
+                ex.printStackTrace();
             }
         }
         this.websiteIndex += i;
@@ -132,7 +137,6 @@ public class App {
     private void saveMutations (WebElement activator, List <WebElement> mutations, int index) throws Exception {
         List <WebElement> mutationCache = new ArrayList <WebElement> ();
         BufferedImage image = this.takeScreenshot();
-        //this.save_target_screenshot(image, activator, 0, "widget" + index);
         for (int i = 0; i < mutations.size(); i++) {
             WebElement mutation = mutations.get(i);
             if (!mutationCache.contains(mutation)) {
@@ -171,6 +175,8 @@ public class App {
                     mutationCache.add(mutation);
                 } catch (StaleElementReferenceException ex) {
                     ex.printStackTrace();
+                } catch (IOException eio) {
+                    eio.printStackTrace();
                 }
             }
         }
@@ -184,16 +190,13 @@ public class App {
     }
 
 
-    private BufferedImage takeScreenshot () {
-        Screenshot ashot_screenshot = new AShot()
-            //.shootingStrategy(ShootingStrategies.viewportPasting(500))
-            .takeScreenshot(this.driver);
-        return ashot_screenshot.getImage();
+    private BufferedImage takeScreenshot () throws IOException {
+        File imageFile = ((TakesScreenshot) this.driver).getScreenshotAs(OutputType.FILE);
+        return ImageIO.read(imageFile);
     }
 
     public void save_target_screenshot (BufferedImage full_image, WebElement target,
                                         int element_index, String filename) throws Exception {
-        BufferedImage sub_image = null;
         int left = target.getLocation().getX(),
             top = target.getLocation().getY(),
             height = target.getSize().getHeight(),
@@ -214,12 +217,43 @@ public class App {
             height = full_image.getHeight() - top - 1;
         if (left + width >= full_image.getWidth())
             width = full_image.getWidth() - left - 1;
-        sub_image = full_image.getSubimage(
-                left, top,
-                (width <= 0 ? 1 : width),
-                (height <= 0 ? 1 : height));
+        BufferedImage targetScreenshot = full_image.getSubimage(
+                0, 0, full_image.getWidth(), full_image.getHeight());
+        Point point = target.getLocation();
+        for (int image_x = 0; image_x < full_image.getWidth(); image_x++) {
+            for (int image_y = 0; image_y < full_image.getHeight(); image_y++) {
+                if (image_x < point.getX() || image_x > (point.getX() + width) ||
+                    image_y < point.getY() || image_y > (point.getY() + height)) {
+                    Color c = new Color(targetScreenshot.getRGB(image_x, image_y));
+                    targetScreenshot.setRGB(image_x, image_y,
+                        (new Color(
+                            (int) Math.floor(0.1 * c.getRed()),
+                            (int) Math.floor(0.1 * c.getGreen()),
+                            (int) Math.floor(0.1 * c.getBlue()),
+                            255
+                        )).hashCode());
+                }
+            }
+        }
+
         File file = new File(this.folder + filename + "." + element_index + ".element.png");
-        ImageIO.write(sub_image, "png", file);
+        ImageIO.write(targetScreenshot, "png", file);
+
+        for (int image_x = 0; image_x < full_image.getWidth(); image_x++) {
+            for (int image_y = 0; image_y < full_image.getHeight(); image_y++) {
+                if (image_x < point.getX() || image_x > (point.getX() + width) ||
+                    image_y < point.getY() || image_y > (point.getY() + height)) {
+                    Color c = new Color(targetScreenshot.getRGB(image_x, image_y));
+                    targetScreenshot.setRGB(image_x, image_y,
+                        (new Color(
+                            (int) Math.floor(10 * c.getRed()),
+                            (int) Math.floor(10 * c.getGreen()),
+                            (int) Math.floor(10 * c.getBlue()),
+                            255
+                        )).hashCode());
+                }
+            }
+        }
     }
 
 
